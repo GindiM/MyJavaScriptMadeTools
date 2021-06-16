@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        div {
+            text-align: center;
+            zoom: 1.6;
+        }
+
+        button {
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        #origStr {
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+    </style>
+    <script>
+
+        function myFunction() {
+            let origStr = document.getElementById("origStr").value;
+            let newStr = document.getElementById("newStr").value;
+            let textareaVal = document.getElementById("textarea").value;
+            let newtextarea = document.getElementById("newtextarea");
+
+            if (origStr == '' || textareaVal == '') {
+                alert("Input the text you want to be processed");
+                return;
+            }
+
+            let str = textareaVal;
+            //     let str = Michael$Cohen$Gindi$
+            let j = 0;
+            let slice1;
+            let slice2;
+
+            //str = str.replace(new RegExp(origStr,"g"), newStr);
+
+            //no regExp;
+            //no stack overflow for similar substring
+            while (str.indexOf(origStr) > -1) {
+                if (str.indexOf(origStr) < 0 || origStr == "")
+                    break;
+                if (str.lastIndexOf(origStr) == str.indexOf(origStr))
+                    str.replace(origStr, newStr);
+
+                slice1 = str.slice(0, str.indexOf(origStr, j));  //j=0
+                j = str.indexOf(origStr, j)
+                slice2 = str.slice(j + origStr.length);
+                str = slice1 + newStr + slice2;
+            }
+            newtextarea.value = str;
+        }
+
+
+        function copyToClipBoard() {
+            let copy = document.getElementById("newtextarea");
+            copy.select();
+            copy.setSelectionRange(0, 99999)
+            document.execCommand("copy");
+        }
+    </script>
+</head>
+<body>
+
+    <div>
+        <textarea id="textarea" placeholder="Original text"></textarea>
+    </div>
+    <div>
+        <input type="text" id="origStr" maxlength="10" placeholder="Text to remove">
+    </div>
+    <div>
+        <input type="text" id="newStr" maxlength="10" placeholder="Text to replace">
+    </div>
+    <div>
+        <button onclick="myFunction()">Replace</button>
+    </div>
+    <div>
+        <textarea id="newtextarea" placeholder="New text"></textarea>
+    </div>
+    <div>
+        <button onclick="copyToClipBoard()">Copy</button>
+    </div>
+
+</body>
+</html>
